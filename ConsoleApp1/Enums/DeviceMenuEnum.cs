@@ -1,6 +1,6 @@
 ﻿namespace ConsoleApp1
 {
-    public enum LaptopMenu
+    public enum DeviceMenuOption
     {
         Info = 1,
         Play = 2,
