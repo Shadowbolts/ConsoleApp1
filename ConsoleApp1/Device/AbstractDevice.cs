@@ -1,7 +1,9 @@
 ﻿namespace ConsoleApp1
 {
-    public abstract class Device
+    public abstract class BasicDevice : IObservable<string>
     {
+        private List<IObserver<string>> observers = new List<IObserver<string>>();
+
         public string Name { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
@@ -11,7 +13,7 @@
         public bool Network { get; set; }
         public bool Printer { get; set; }
         public bool Speaker { get; set; }
-        protected Device(string name, string brand, string model, int battery, int maxBattery, bool software, bool network, bool printer, bool speaker)
+        protected BasicDevice(string name, string brand, string model, int battery, int maxBattery, bool software, bool network, bool printer, bool speaker)
         {
             Name = name;
             Brand = brand;
@@ -23,7 +25,42 @@
             Printer = printer;
             Speaker = speaker;
         }
-        protected virtual void UseBattery(string activity, int consumption, Action<Device> returnToMenu)
+        public IDisposable Subscribe(IObserver<string> observer)
+        {
+            if (!observers.Contains(observer))
+            {
+                observers.Add(observer);
+            }
+            return new Unsubscriber(observers, observer);
+        }
+        protected void Notify(string state)
+        {
+            Console.Clear();
+            Console.WriteLine($"[{Name}: {Brand} {Model}]: {state}");
+            foreach (var observer in observers)
+            {
+                observer.OnNext($"{Name}: {Brand} {Model}: {state}");
+            }
+        }
+        private class Unsubscriber : IDisposable
+        {
+            private List<IObserver<string>> _observers;
+            private IObserver<string> _observer;
+            public Unsubscriber(List<IObserver<string>> observers, IObserver<string> observer)
+            {
+                _observers = observers;
+                _observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observers.Contains(_observer))
+                {
+                    _observers.Remove(_observer);
+                }
+            }
+        }
+        protected virtual void UseBattery(string activity, int consumption, Action<BasicDevice> returnToMenu)
         {
             Console.Clear();
             while (Battery > 0)
@@ -59,7 +96,7 @@
                 $"Колонки: {(Speaker ? "Наявні" : "Відсутні")}");
             Console.ReadLine();
         }
-        protected void WatchVideoBase(Action<Device> returnToMenu, int batteryUsage)
+        protected void WatchVideoBase(Action<BasicDevice> returnToMenu, int batteryUsage)
         {
             Console.Clear();
             if (!Software)
@@ -83,7 +120,7 @@
                 UseBattery("дивитесь відео", batteryUsage, returnToMenu);
             }
         }
-        protected void PlayGameBase(Action<Device> returnToMenu, int batteryUsage)
+        protected void PlayGameBase(Action<BasicDevice> returnToMenu, int batteryUsage)
         {
             Console.Clear();
             if (!Software)
@@ -102,7 +139,7 @@
                 UseBattery("граєте", batteryUsage, returnToMenu);
             }
         }
-        protected void UsePrinterBase(Action<Device> returnToMenu, int batteryUsage)
+        protected void UsePrinterBase(Action<BasicDevice> returnToMenu, int batteryUsage)
         {
             Console.Clear();
             if (!Software)
@@ -120,8 +157,8 @@
                 Console.ReadLine();
             }
         }
-        public abstract void PlayGame(Action<Device> returnToMenu);
-        public abstract void WatchVideo(Action<Device> returnToMenu);
-        public abstract void UsePrinter(Action<Device> returnToMenu);
+        public abstract void PlayGame(Action<BasicDevice> returnToMenu);
+        public abstract void WatchVideo(Action<BasicDevice> returnToMenu);
+        public abstract void UsePrinter(Action<BasicDevice> returnToMenu);
     }
 }

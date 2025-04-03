@@ -1,8 +1,10 @@
-﻿namespace ConsoleApp1
+﻿using ConsoleApp1.Device;
+
+namespace ConsoleApp1
 {
     public static class SelectDeviceMenu
     {
-        public static Device DeviceSelection()
+        public static BasicDevice DeviceSelection()
         {
             while (true)
             {
