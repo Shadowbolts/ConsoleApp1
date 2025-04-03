@@ -1,6 +1,4 @@
-﻿using ConsoleApp1.Device.DeviceObserver;
-
-namespace ConsoleApp1
+﻿namespace ConsoleApp1
 {
     public static class Program
     {
@@ -9,12 +7,9 @@ namespace ConsoleApp1
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.InputEncoding = System.Text.Encoding.UTF8;
 
-            Technician observer = new Technician();
-
             while (true)
             {
-                BasicDevice device = SelectDeviceMenu.DeviceSelection();
-                observer.Subscribe(device);
+                Device device = SelectDeviceMenu.DeviceSelection();
                 DeviceMenu.Menu(device);
             }
         }

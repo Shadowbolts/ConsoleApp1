@@ -1,13 +1,13 @@
-﻿namespace ConsoleApp1.Device
+﻿namespace ConsoleApp1
 {
     public static class DeviceController
     {
-        public static void ChangeBattery(BasicDevice device)
+        public static void ChangeBattery(Device device)
         {
             Console.Clear();
             Console.Write("Введіть значення: ");
             string value = Console.ReadLine()!;
-            if (int.TryParse(value, out int number) && number <= device.MaxBattery)
+            if (Int32.TryParse(value, out int number) && number <= device.MaxBattery)
             {
                 device.Battery = number;
                 Console.WriteLine($"Батарея змінена на {value}мАг");
@@ -18,7 +18,7 @@
             }
             Console.ReadLine();
         }
-        public static void ChangeSettings(BasicDevice device, string settingName)
+        public static void ChangeSettings(Device device, string settingName)
         {
             Console.Clear();
             bool currentValue = settingName switch

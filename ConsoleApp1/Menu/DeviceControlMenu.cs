@@ -1,10 +1,8 @@
-﻿using ConsoleApp1.Device;
-
-namespace ConsoleApp1
+﻿namespace ConsoleApp1
 {
     public static class DeviceControlMenu
     {
-        public static void Control(BasicDevice device)
+        public static void Control(Device device)
         {
             while (true)
             {

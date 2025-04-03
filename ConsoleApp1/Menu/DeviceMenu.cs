@@ -2,7 +2,7 @@
 {
     public static class DeviceMenu
     {
-        public static void Menu(BasicDevice device)
+        public static void Menu(Device device)
         {
             while (true)
             {
