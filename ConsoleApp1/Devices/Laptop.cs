@@ -7,15 +7,18 @@
 
         public override void PlayGame(Action<Device> returnToMenu)
         {
+            Notify("Запуск гри");
             PlayGameBase(returnToMenu, 500);
         }
         public override void WatchVideo(Action<Device> returnToMenu)
         {
+            Notify("Запуск відео");
             WatchVideoBase(returnToMenu, 250);
         }
         
         public override void UsePrinter(Action<Device> returnToMenu)
         {
+            Notify("Запуск принтера");
             UsePrinterBase(returnToMenu, 250);
         }
     }

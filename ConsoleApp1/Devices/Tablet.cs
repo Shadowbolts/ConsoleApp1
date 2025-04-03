@@ -8,16 +8,19 @@ namespace ConsoleApp1
 
         public override void PlayGame(Action<Device> returnToMenu)
         {
+            Notify("Запуск гри");
             PlayGameBase(returnToMenu, 400);
         }
 
         public override void UsePrinter(Action<Device> returnToMenu)
         {
+            Notify("Запуск принтера");
             UsePrinterBase(returnToMenu, 200);
         }
 
         public override void WatchVideo(Action<Device> returnToMenu)
         {
+            Notify("Запуск відео");
             WatchVideoBase(returnToMenu, 200);
         }
     }

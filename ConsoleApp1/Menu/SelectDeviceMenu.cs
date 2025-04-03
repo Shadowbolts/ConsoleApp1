@@ -1,4 +1,6 @@
-﻿namespace ConsoleApp1
+﻿using ConsoleApp1.Devices;
+
+namespace ConsoleApp1
 {
     public static class SelectDeviceMenu
     {

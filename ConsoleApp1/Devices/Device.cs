@@ -1,7 +1,9 @@
 ﻿namespace ConsoleApp1
 {
-    public abstract class Device
+    public abstract class Device : IObservable<string>
     {
+        private List<IObserver<string>> observers = new List<IObserver<string>>();
+
         public string Name { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
@@ -22,6 +24,41 @@
             Network = network;
             Printer = printer;
             Speaker = speaker;
+        }
+        public IDisposable Subscribe(IObserver<string> observer)
+        {
+            if (!observers.Contains(observer))
+            {
+                observers.Add(observer);
+            }
+            return new Unsubscriber(observers, observer);
+        }
+        protected void Notify(string state)
+        {
+            Console.Clear();
+            Console.WriteLine($"[{Name}: {Brand} {Model}]: {state}");
+            foreach (var observer in observers)
+            {
+                observer.OnNext($"{Name}: {Brand} {Model}: {state}");
+            }
+        }
+        private class Unsubscriber : IDisposable
+        {
+            private List<IObserver<string>> _observers;
+            private IObserver<string> _observer;
+            public Unsubscriber(List<IObserver<string>> observers, IObserver<string> observer)
+            {
+                _observers = observers;
+                _observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observers.Contains(_observer))
+                {
+                    _observers.Remove(_observer);
+                }
+            }
         }
         protected virtual void UseBattery(string activity, int consumption, Action<Device> returnToMenu)
         {
